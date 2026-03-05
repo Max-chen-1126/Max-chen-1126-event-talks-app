@@ -5,141 +5,180 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tech Talks Today - Event Schedule</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             margin: 0;
-            background-color: #f4f7f6;
-            color: #333;
+            background-color: #f8f9fa; /* Lighter, softer background */
+            color: #343a40; /* Darker text for better contrast */
             line-height: 1.6;
         }
         header {
-            background-color: #2c3e50;
+            background-color: #212529; /* Deep charcoal */
             color: #ffffff;
-            padding: 1.5em 0;
+            padding: 2em 0; /* More padding */
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* Softer, deeper shadow */
         }
         header h1 {
             margin: 0;
-            font-size: 2.5em;
+            font-size: 3em; /* Larger heading */
+            letter-spacing: -0.03em;
+            font-weight: 700;
+        }
+        header p {
+            font-size: 1.1em;
+            opacity: 0.9;
         }
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            padding: 0 20px;
+            max-width: 1100px; /* Wider container */
+            margin: 30px auto; /* More vertical margin */
+            padding: 0 25px;
         }
         .search-section {
             background-color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            padding: 25px;
+            border-radius: 10px; /* Larger border-radius */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08); /* Softer shadow */
+            margin-bottom: 40px;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px; /* More space between items */
         }
         .search-section label {
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 600; /* Bolder label */
+            color: #212529;
+            font-size: 1.1em;
         }
         .search-section input[type="text"] {
             flex-grow: 1;
-            padding: 10px 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px 18px; /* More padding */
+            border: 1px solid #ced4da; /* Softer border */
+            border-radius: 6px;
             font-size: 1em;
             outline: none;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Smooth transition */
         }
         .search-section input[type="text"]:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            border-color: #007bff; /* Accent blue */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Accent shadow */
         }
         .schedule {
             background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             overflow: hidden;
         }
         .schedule-item {
             display: flex;
-            border-bottom: 1px solid #eee;
-            padding: 20px;
+            border-bottom: 1px solid #e9ecef; /* Lighter border */
+            padding: 25px; /* More padding */
             align-items: flex-start;
         }
         .schedule-item:last-child {
             border-bottom: none;
         }
         .schedule-item.break {
-            background-color: #ecf0f1;
-            color: #555;
+            background-color: #e2f3f8; /* Light blue background for breaks */
+            color: #1e88e5; /* Accent blue for break text */
             font-style: italic;
             justify-content: center;
             text-align: center;
-            padding: 15px 20px;
+            padding: 20px 25px;
+            font-weight: 600;
         }
         .schedule-item.hidden {
             display: none;
         }
         .time-slot {
-            flex: 0 0 120px; /* Fixed width for time */
-            font-weight: bold;
-            color: #3498db;
-            font-size: 1.1em;
+            flex: 0 0 160px; /* Wider for time */
+            font-weight: 700;
+            color: #007bff; /* Accent blue */
+            font-size: 1.2em; /* Larger time font */
             text-align: right;
-            padding-right: 20px;
+            padding-right: 30px; /* More spacing */
+            position: relative;
+        }
+        .time-slot::after {
+            content: '';
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            background-color: #007bff;
+            border-radius: 50%;
         }
         .talk-details {
             flex-grow: 1;
         }
         .talk-details h3 {
             margin-top: 0;
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 5px;
+            color: #212529;
+            font-size: 1.6em; /* Larger talk title */
+            margin-bottom: 8px;
+            font-weight: 700;
         }
         .talk-details .speakers {
-            font-style: italic;
-            color: #7f8c8d;
-            margin-bottom: 10px;
+            font-style: normal; /* Remove italic */
+            color: #6c757d; /* Softer gray */
+            margin-bottom: 12px;
+            font-size: 0.95em;
         }
         .talk-details .categories {
-            margin-top: 10px;
-            font-size: 0.9em;
+            margin-top: 12px;
+            font-size: 0.85em;
         }
         .talk-details .category-tag {
-            background-color: #e0f2f7;
-            color: #2196f3;
-            padding: 4px 8px;
-            border-radius: 4px;
-            margin-right: 5px;
+            background-color: #d1ecf1; /* Light teal background */
+            color: #0c5460; /* Darker teal text */
+            padding: 5px 10px; /* More padding */
+            border-radius: 5px;
+            margin-right: 8px;
             display: inline-block;
             margin-bottom: 5px;
+            font-weight: 600;
         }
         .talk-details p {
             margin-top: 10px;
-            color: #666;
+            color: #495057; /* Medium gray */
         }
         footer {
             text-align: center;
-            padding: 2em 0;
-            margin-top: 30px;
-            background-color: #2c3e50;
-            color: #ecf0f1;
+            padding: 2.5em 0;
+            margin-top: 50px;
+            background-color: #212529;
+            color: #adb5bd; /* Lighter footer text */
             font-size: 0.9em;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
         }
 
         @media (max-width: 768px) {
-            .schedule-item {
+            header h1 {
+                font-size: 2.5em;
+            }
+            .search-section {
                 flex-direction: column;
-                align-items: flex-start;
+                align-items: stretch;
             }
             .time-slot {
                 text-align: left;
                 padding-right: 0;
                 margin-bottom: 10px;
+                flex: none;
             }
-            header h1 {
-                font-size: 2em;
+            .time-slot::after {
+                display: none;
+            }
+            .schedule-item {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
+            .talk-details h3 {
+                font-size: 1.4em;
             }
         }
     </style>
@@ -174,42 +213,42 @@
                     category: ["AI", "Machine Learning"],
                     duration: 60, // minutes
                     description: "Explore the cutting-edge advancements in AI and how they are shaping the applications we use daily, from smart assistants to personalized recommendations."
-                },\
+                },
                 {
                     title: "Mastering Modern Web Development with WebAssembly",
                     speakers: ["Ben Carter", "Chloe Davis"],
                     category: ["Web Development", "Performance"],
                     duration: 60,
                     description: "Dive deep into WebAssembly (WASM) and discover how it's revolutionizing web performance and enabling new possibilities for complex web applications."
-                },\
+                },
                 {
                     title: "Cloud Native Architectures: A Deep Dive into Kubernetes",
                     speakers: ["Dr. Elena Petrova"],
                     category: ["Cloud", "DevOps", "Containers"],
                     duration: 60,
                     description: "Understand the principles of cloud-native design and get hands-on with Kubernetes for deploying, scaling, and managing containerized applications."
-                },\
+                },
                 {
                     title: "Cybersecurity Essentials for Developers",
                     speakers: ["Liam O'Connell"],
                     category: ["Security", "Development"],
                     duration: 60,
                     description: "Learn practical cybersecurity best practices and common vulnerabilities to build more secure software from the ground up."
-                },\
+                },
                 {
                     title: "Data Visualization: Telling Stories with Data",
                     speakers: ["Sophia Lee"],
                     category: ["Data Science", "Visualization"],
                     duration: 60,
                     description: "Unlock the power of data visualization to communicate complex insights effectively. We'll cover tools and techniques for compelling data storytelling."
-                },\
+                },
                 {
                     title: "Blockchain Beyond Crypto: Enterprise Applications",
                     speakers: ["Noah Jensen", "Isabella Rossi"],
                     category: ["Blockchain", "Enterprise"],
                     duration: 60,
                     description: "Move beyond cryptocurrency and discover how blockchain technology is being adopted in various enterprise settings for supply chain, identity, and more."
-                }\
+                }
             ];
 
             const eventStartTime = new Date();
