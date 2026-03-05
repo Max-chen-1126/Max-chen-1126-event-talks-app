@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Today - Event Schedule</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #2c3e50;
+            color: #ffffff;
+            padding: 1.5em 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+        .search-section {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .search-section label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .search-section input[type="text"] {
+            flex-grow: 1;
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            outline: none;
+        }
+        .search-section input[type="text"]:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        .schedule {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .schedule-item {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            padding: 20px;
+            align-items: flex-start;
+        }
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        .schedule-item.break {
+            background-color: #ecf0f1;
+            color: #555;
+            font-style: italic;
+            justify-content: center;
+            text-align: center;
+            padding: 15px 20px;
+        }
+        .schedule-item.hidden {
+            display: none;
+        }
+        .time-slot {
+            flex: 0 0 120px; /* Fixed width for time */
+            font-weight: bold;
+            color: #3498db;
+            font-size: 1.1em;
+            text-align: right;
+            padding-right: 20px;
+        }
+        .talk-details {
+            flex-grow: 1;
+        }
+        .talk-details h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+        .talk-details .speakers {
+            font-style: italic;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+        .talk-details .categories {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+        .talk-details .category-tag {
+            background-color: #e0f2f7;
+            color: #2196f3;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 5px;
+            display: inline-block;
+            margin-bottom: 5px;
+        }
+        .talk-details p {
+            margin-top: 10px;
+            color: #666;
+        }
+        footer {
+            text-align: center;
+            padding: 2em 0;
+            margin-top: 30px;
+            background-color: #2c3e50;
+            color: #ecf0f1;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .schedule-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .time-slot {
+                text-align: left;
+                padding-right: 0;
+                margin-bottom: 10px;
+            }
+            header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Tech Talks Today</h1>
+        <p>A Day of Innovation and Learning</p>
+    </header>
+
+    <div class="container">
+        <section class="search-section">
+            <label for="categorySearch">Search by Category:</label>
+            <input type="text" id="categorySearch" placeholder="e.g., AI, WebDev, Cloud">
+        </section>
+
+        <section class="schedule" id="schedule">
+            <!-- Schedule items will be dynamically loaded here by JavaScript -->
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Tech Talks Today. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const talksData = [
+                {
+                    title: "The Future of AI in Everyday Applications",
+                    speakers: ["Dr. Anya Sharma"],
+                    category: ["AI", "Machine Learning"],
+                    duration: 60, // minutes
+                    description: "Explore the cutting-edge advancements in AI and how they are shaping the applications we use daily, from smart assistants to personalized recommendations."
+                },\
+                {
+                    title: "Mastering Modern Web Development with WebAssembly",
+                    speakers: ["Ben Carter", "Chloe Davis"],
+                    category: ["Web Development", "Performance"],
+                    duration: 60,
+                    description: "Dive deep into WebAssembly (WASM) and discover how it's revolutionizing web performance and enabling new possibilities for complex web applications."
+                },\
+                {
+                    title: "Cloud Native Architectures: A Deep Dive into Kubernetes",
+                    speakers: ["Dr. Elena Petrova"],
+                    category: ["Cloud", "DevOps", "Containers"],
+                    duration: 60,
+                    description: "Understand the principles of cloud-native design and get hands-on with Kubernetes for deploying, scaling, and managing containerized applications."
+                },\
+                {
+                    title: "Cybersecurity Essentials for Developers",
+                    speakers: ["Liam O'Connell"],
+                    category: ["Security", "Development"],
+                    duration: 60,
+                    description: "Learn practical cybersecurity best practices and common vulnerabilities to build more secure software from the ground up."
+                },\
+                {
+                    title: "Data Visualization: Telling Stories with Data",
+                    speakers: ["Sophia Lee"],
+                    category: ["Data Science", "Visualization"],
+                    duration: 60,
+                    description: "Unlock the power of data visualization to communicate complex insights effectively. We'll cover tools and techniques for compelling data storytelling."
+                },\
+                {
+                    title: "Blockchain Beyond Crypto: Enterprise Applications",
+                    speakers: ["Noah Jensen", "Isabella Rossi"],
+                    category: ["Blockchain", "Enterprise"],
+                    duration: 60,
+                    description: "Move beyond cryptocurrency and discover how blockchain technology is being adopted in various enterprise settings for supply chain, identity, and more."
+                }\
+            ];
+
+            const eventStartTime = new Date();
+            eventStartTime.setHours(10, 0, 0, 0); // Event starts at 10:00 AM
+
+            const scheduleContainer = document.getElementById('schedule');
+            const categorySearchInput = document.getElementById('categorySearch');
+
+            function formatTime(date) {
+                return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+
+            function renderSchedule(filterCategory = '') {
+                scheduleContainer.innerHTML = ''; // Clear existing schedule
+                let currentTime = new Date(eventStartTime.getTime());
+
+                let talkIndex = 0;
+                const totalTalks = talksData.length;
+
+                for (let i = 0; i < totalTalks + 1; i++) { // +1 for the lunch break
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('schedule-item');
+
+                    const timeSlotDiv = document.createElement('div');
+                    timeSlotDiv.classList.add('time-slot');
+
+                    if (i === 2) { // After the second talk, insert lunch break
+                        const lunchEndTime = new Date(currentTime.getTime() + (60 * 60 * 1000)); // 1 hour lunch
+                        timeSlotDiv.textContent = `${formatTime(currentTime)} - ${formatTime(lunchEndTime)}`;
+                        itemDiv.classList.add('break');
+                        itemDiv.innerHTML = `<div class="time-slot">${timeSlotDiv.textContent}</div><div class="talk-details"><h3>Lunch Break</h3><p>Enjoy a delicious lunch!</p></div>`;
+                        scheduleContainer.appendChild(itemDiv);
+                        currentTime = new Date(lunchEndTime.getTime()); // Update current time after lunch
+                        
+                        // Add transition after lunch
+                        const transitionDiv = document.createElement('div');
+                        transitionDiv.classList.add('schedule-item', 'break');
+                        const transitionEndTime = new Date(currentTime.getTime() + (10 * 60 * 1000));
+                        transitionDiv.innerHTML = `<div class="time-slot">${formatTime(currentTime)} - ${formatTime(transitionEndTime)}</div><div class="talk-details"><h3>Transition</h3><p>Time to move to your next session.</p></div>`;
+                        scheduleContainer.appendChild(transitionDiv);
+                        currentTime = new Date(transitionEndTime.getTime());
+                        continue; // Skip to next iteration for talks
+                    }
+
+                    if (talkIndex < totalTalks) {
+                        const talk = talksData[talkIndex];
+                        const talkEndTime = new Date(currentTime.getTime() + (talk.duration * 60 * 1000));
+
+                        timeSlotDiv.textContent = `${formatTime(currentTime)} - ${formatTime(talkEndTime)}`;
+
+                        const talkDetailsDiv = document.createElement('div');
+                        talkDetailsDiv.classList.add('talk-details');
+
+                        const categoriesHtml = talk.category.map(cat => `<span class="category-tag">${cat}</span>`).join('');
+
+                        talkDetailsDiv.innerHTML = `
+                            <h3>${talk.title}</h3>
+                            <div class="speakers">Speaker(s): ${talk.speakers.join(', ')}</div>
+                            <p>${talk.description}</p>
+                            <div class="categories">Categories: ${categoriesHtml}</div>
+                        `;
+                        
+                        itemDiv.appendChild(timeSlotDiv);
+                        itemDiv.appendChild(talkDetailsDiv);
+
+                        // Filtering logic
+                        const matchesFilter = filterCategory === '' || talk.category.some(cat => cat.toLowerCase().includes(filterCategory.toLowerCase()));
+                        if (!matchesFilter) {
+                            itemDiv.classList.add('hidden');
+                        }
+
+                        scheduleContainer.appendChild(itemDiv);
+                        currentTime = new Date(talkEndTime.getTime()); // Update current time after talk
+
+                        // Add transition after talk (unless it's the very last item)
+                        if (talkIndex < totalTalks -1 || (talkIndex === totalTalks - 1 && i === totalTalks)) { // Check if not the last talk + last iteration
+                             // This condition needs to be adjusted properly to avoid adding a transition after the *very last* talk displayed, even if it's the 6th talk
+                             // The loop logic here is a bit tricky with the lunch break. Let's simplify.
+                        }
+                        
+                        // Add transition after each talk, except the very last one
+                        if (talkIndex < totalTalks -1 || (talkIndex === totalTalks -1 && i<totalTalks) ) { // This condition needs refinement.
+                            // If it's the last talk, we don't add a transition after it.
+                            // The current logic of the loop with `i` and `talkIndex` is a bit complex.
+                            // I'll adjust the schedule generation slightly to make transitions clearer.
+
+                        }
+                        
+                        talkIndex++;
+                    }
+
+                    // Insert transition times only if it's not the very end of the schedule
+                    if (talkIndex < totalTalks && itemDiv.classList.contains('schedule-item') && !itemDiv.classList.contains('break')) {
+                         const transitionStartTime = new Date(currentTime.getTime());
+                         const transitionEndTime = new Date(currentTime.getTime() + (10 * 60 * 1000));
+                         const transitionDiv = document.createElement('div');
+                         transitionDiv.classList.add('schedule-item', 'break');
+                         transitionDiv.innerHTML = `<div class="time-slot">${formatTime(transitionStartTime)} - ${formatTime(transitionEndTime)}</div><div class="talk-details"><h3>Transition</h3><p>Time to move to your next session.</p></div>`;
+                         scheduleContainer.appendChild(transitionDiv);
+                         currentTime = new Date(transitionEndTime.getTime());
+                    }
+                }
+            }
+
+            // Corrected and simplified schedule rendering logic
+            function renderFullSchedule(filterCategory = '') {
+                scheduleContainer.innerHTML = ''; // Clear existing schedule
+                let currentScheduleTime = new Date(eventStartTime.getTime());
+
+                talksData.forEach((talk, index) => {
+                    // Render Talk
+                    const talkStart = new Date(currentScheduleTime.getTime());
+                    const talkEnd = new Date(currentScheduleTime.getTime() + (talk.duration * 60 * 1000));
+
+                    const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('schedule-item');
+                    
+                    const timeSlotDiv = document.createElement('div');
+                    timeSlotDiv.classList.add('time-slot');
+                    timeSlotDiv.textContent = `${formatTime(talkStart)} - ${formatTime(talkEnd)}`;
+
+                    const talkDetailsDiv = document.createElement('div');
+                    talkDetailsDiv.classList.add('talk-details');
+
+                    const categoriesHtml = talk.category.map(cat => `<span class="category-tag">${cat}</span>`).join('');
+
+                    talkDetailsDiv.innerHTML = `
+                        <h3>${talk.title}</h3>
+                        <div class="speakers">Speaker(s): ${talk.speakers.join(', ')}</div>
+                        <p>${talk.description}</p>
+                        <div class="categories">Categories: ${categoriesHtml}</div>
+                    `;
+                    
+                    itemDiv.appendChild(timeSlotDiv);
+                    itemDiv.appendChild(talkDetailsDiv);
+
+                    const matchesFilter = filterCategory === '' || talk.category.some(cat => cat.toLowerCase().includes(filterCategory.toLowerCase()));
+                    if (!matchesFilter) {
+                        itemDiv.classList.add('hidden');
+                    }
+                    scheduleContainer.appendChild(itemDiv);
+                    currentScheduleTime = new Date(talkEnd.getTime());
+
+                    // Check for Lunch Break after Talk 2
+                    if (index === 1) {
+                        // Add transition before lunch
+                        const transitionBeforeLunchStart = new Date(currentScheduleTime.getTime());
+                        const transitionBeforeLunchEnd = new Date(currentScheduleTime.getTime() + (10 * 60 * 1000));
+                        const transitionDiv1 = document.createElement('div');
+                        transitionDiv1.classList.add('schedule-item', 'break');
+                        transitionDiv1.innerHTML = `<div class="time-slot">${formatTime(transitionBeforeLunchStart)} - ${formatTime(transitionBeforeLunchEnd)}</div><div class="talk-details"><h3>Transition</h3><p>Short break before lunch.</p></div>`;
+                        scheduleContainer.appendChild(transitionDiv1);
+                        currentScheduleTime = new Date(transitionBeforeLunchEnd.getTime());
+
+                        // Add Lunch Break
+                        const lunchStart = new Date(currentScheduleTime.getTime());
+                        const lunchEnd = new Date(currentScheduleTime.getTime() + (60 * 60 * 1000)); // 1 hour
+                        const lunchDiv = document.createElement('div');
+                        lunchDiv.classList.add('schedule-item', 'break');
+                        lunchDiv.innerHTML = `<div class="time-slot">${formatTime(lunchStart)} - ${formatTime(lunchEnd)}</div><div class="talk-details"><h3>Lunch Break</h3><p>Enjoy a delicious lunch!</p></div>`;
+                        scheduleContainer.appendChild(lunchDiv);
+                        currentScheduleTime = new Date(lunchEnd.getTime());
+
+                        // Add transition after lunch
+                        const transitionAfterLunchStart = new Date(currentScheduleTime.getTime());
+                        const transitionAfterLunchEnd = new Date(currentScheduleTime.getTime() + (10 * 60 * 1000));
+                        const transitionDiv2 = document.createElement('div');
+                        transitionDiv2.classList.add('schedule-item', 'break');
+                        transitionDiv2.innerHTML = `<div class="time-slot">${formatTime(transitionAfterLunchStart)} - ${formatTime(transitionAfterLunchEnd)}</div><div class="talk-details"><h3>Transition</h3><p>Back to talks!</p></div>`;
+                        scheduleContainer.appendChild(transitionDiv2);
+                        currentScheduleTime = new Date(transitionAfterLunchEnd.getTime());
+                    } else if (index < talksData.length - 1) { // Add transition after other talks, but not the last one
+                        const transitionStart = new Date(currentScheduleTime.getTime());
+                        const transitionEnd = new Date(currentScheduleTime.getTime() + (10 * 60 * 1000));
+                        const transitionDiv = document.createElement('div');
+                        transitionDiv.classList.add('schedule-item', 'break');
+                        transitionDiv.innerHTML = `<div class="time-slot">${formatTime(transitionStart)} - ${formatTime(transitionEnd)}</div><div class="talk-details"><h3>Transition</h3><p>Time to move to your next session.</p></div>`;
+                        scheduleContainer.appendChild(transitionDiv);
+                        currentScheduleTime = new Date(transitionEnd.getTime());
+                    }
+                });
+            }
+
+            // Initial render
+            renderFullSchedule();
+
+            // Search functionality
+            categorySearchInput.addEventListener('input', (event) => {
+                renderFullSchedule(event.target.value.trim());
+            });
+        });
+    </script>
+</body>
+</html>
